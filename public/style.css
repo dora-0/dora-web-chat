@@ -41,6 +41,7 @@ ul {
 }
 
 .page {
+  /* TODO: height 100% 설정 시 부트스트랩 UI와 호환되지 않는 문제 수정하기 */
   height: 95%;
   position: absolute;
   width: 100%;
