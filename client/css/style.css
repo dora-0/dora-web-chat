@@ -42,7 +42,7 @@ ul {
 
 .page {
   /* TODO: height 100% 설정 시 부트스트랩 UI와 호환되지 않는 문제 수정하기 */
-  height: 95%;
+  height: 100%;
   position: absolute;
   width: 100%;
 }
@@ -51,6 +51,7 @@ ul {
 
 .login.page {
   background-color: #000;
+  display: none;
 }
 
 .login.page .form {
@@ -83,6 +84,27 @@ ul {
 }
 
 .login.page .title, .login.page .usernameInput {
+  color: #fff;
+  font-weight: 100;
+}
+
+.load.page {
+  background: #000;
+}
+
+.load.page .section {
+  height: 100px;
+  margin-top: -100px;
+  position: absolute;
+
+  text-align: center;
+  top: 50%;
+  width: 100%;
+}
+
+
+.load.page .title {
+  font-size: 200%;
   color: #fff;
   font-weight: 100;
 }
