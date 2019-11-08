@@ -1,20 +1,20 @@
 $(function() {
-  const FADE_TIME = 150; // ms
-  const TYPING_TIMER_LENGTH = 400; // ms
-  const COLORS = [
+  let FADE_TIME = 150; // ms
+  let TYPING_TIMER_LENGTH = 400; // ms
+  let COLORS = [
     '#e21400', '#91580f', '#f8a700', '#f78b00',
     '#58dc00', '#287b00', '#a8f07a', '#4ae8c4',
     '#3b88eb', '#3824aa', '#a700ff', '#d300e7'
   ];
 
   // Initialize variables
-  const $window = $(window);
-  const $usernameInput = $('.usernameInput'); // Input for username
-  const $messages = $('.messages'); // Messages area
-  const $inputMessage = $('.inputMessage'); // Input message input box
+  let $window = $(window);
+  let $usernameInput = $('.usernameInput'); // Input for username
+  let $messages = $('.messages'); // Messages area
+  let $inputMessage = $('.inputMessage'); // Input message input box
 
-  const $loginPage = $('.login.page'); // The login page
-  const $chatPage = $('.chat.page'); // The chatroom page
+  let $loginPage = $('.login.page'); // The login page
+  let $chatPage = $('.chat.page'); // The chatroom page
 
   // Prompt for setting a username
   var username;
@@ -23,9 +23,9 @@ $(function() {
   var lastTypingTime;
   var $currentInput = $usernameInput.focus();
 
-  const socket = io('https://dora.koreacentral.cloudapp.azure.com:3001');
+  let socket = io('https://dora.koreacentral.cloudapp.azure.com:3001');
 
-  const addParticipantsMessage = (data) => {
+  let addParticipantsMessage = (data) => {
     var message = '';
     // if (data.numUsers === 1) {
     //   message += "there's 1 participant";
@@ -34,10 +34,10 @@ $(function() {
     // }
     message += "현재 " + data.numUsers + "명이 접속 중입니다.";
     log(message);
-  }
+  };
 
   // Sets the client's username
-  const setUsername = () => {
+  let setUsername = () => {
     username = cleanInput($usernameInput.val().trim());
 
     // If the username is valid
@@ -50,10 +50,10 @@ $(function() {
       // Tell the server your username
       socket.emit('add user', username);
     }
-  }
+  };
 
   // Sends a chat message
-  const sendMessage = () => {
+  let sendMessage = () => {
     var message = $inputMessage.val();
     // Prevent markup from being injected into the message
     message = cleanInput(message);
@@ -67,60 +67,60 @@ $(function() {
       // tell server to execute 'new message' and send along one parameter
       socket.emit('new message', message);
     }
-  }
+  };
 
   // Log a message
-  const log = (message, options) => {
-    const $el = $('<li>').addClass('log').text(message);
+  let log = (message, options) => {
+    let $el = $('<li>').addClass('log').text(message);
     addMessageElement($el, options);
-  }
+  };
 
   // Adds the visual chat message to the message list
-  const addChatMessage = (data, options) => {
+  let addChatMessage = (data, options) => {
     // Don't fade the message in if there is an 'X was typing'
-    const $typingMessages = getTypingMessages(data);
+    let $typingMessages = getTypingMessages(data);
     options = options || {};
     if ($typingMessages.length !== 0) {
       options.fade = false;
       $typingMessages.remove();
     }
 
-    const $usernameDiv = $('<span class="username"/>')
+    let $usernameDiv = $('<span class="username"/>')
         .text(data.username)
         .css('color', getUsernameColor(data.username));
-    const $messageBodyDiv = $('<span class="messageBody">')
+    let $messageBodyDiv = $('<span class="messageBody">')
         .text(data.message);
 
-    const typingClass = data.typing ? 'typing' : '';
-    const $messageDiv = $('<li class="message"/>')
+    let typingClass = data.typing ? 'typing' : '';
+    let $messageDiv = $('<li class="message"/>')
         .data('username', data.username)
         .addClass(typingClass)
         .append($usernameDiv, $messageBodyDiv);
 
     addMessageElement($messageDiv, options);
-  }
+  };
 
   // Adds the visual chat typing message
-  const addChatTyping = (data) => {
+  let addChatTyping = (data) => {
     data.typing = true;
     data.message = '님이 입력하는 중 ...';
     addChatMessage(data);
-  }
+  };
 
   // Removes the visual chat typing message
-  const removeChatTyping = (data) => {
+  let removeChatTyping = (data) => {
     getTypingMessages(data).fadeOut(function () {
       $(this).remove();
     });
-  }
+  };
 
   // Adds a message element to the messages and scrolls to the bottom
   // el - The element to add as a message
   // options.fade - If the element should fade-in (default = true)
   // options.prepend - If the element should prepend
   //   all other messages (default = false)
-  const addMessageElement = (el, options) => {
-    const $el = $(el);
+  let addMessageElement = (el, options) => {
+    let $el = $(el);
 
     // Setup default options
     if (!options) {
@@ -143,15 +143,15 @@ $(function() {
       $messages.append($el);
     }
     $messages[0].scrollTop = $messages[0].scrollHeight;
-  }
+  };
 
   // Prevents input from having injected markup
-  const cleanInput = (input) => {
+  let cleanInput = (input) => {
     return $('<div/>').text(input).html();
-  }
+  };
 
   // Updates the typing event
-  const updateTyping = () => {
+  let updateTyping = () => {
     if (connected) {
       if (!typing) {
         typing = true;
@@ -160,34 +160,34 @@ $(function() {
       lastTypingTime = (new Date()).getTime();
 
       setTimeout(() => {
-        const typingTimer = (new Date()).getTime();
-        const timeDiff = typingTimer - lastTypingTime;
+        let typingTimer = (new Date()).getTime();
+        let timeDiff = typingTimer - lastTypingTime;
         if (timeDiff >= TYPING_TIMER_LENGTH && typing) {
           socket.emit('stop typing');
           typing = false;
         }
       }, TYPING_TIMER_LENGTH);
     }
-  }
+  };
 
   // Gets the 'X is typing' messages of a user
-  const getTypingMessages = (data) => {
+  let getTypingMessages = (data) => {
     return $('.typing.message').filter(function (i) {
       return $(this).data('username') === data.username;
     });
-  }
+  };
 
   // Gets the color of a username through our hash function
-  const getUsernameColor = (username) => {
+  let getUsernameColor = (username) => {
     // Compute hash code
     var hash = 7;
     for (var i = 0; i < username.length; i++) {
       hash = username.charCodeAt(i) + (hash << 5) - hash;
     }
     // Calculate color
-    const index = Math.abs(hash % COLORS.length);
+    let index = Math.abs(hash % COLORS.length);
     return COLORS[index];
-  }
+  };
 
   // Keyboard events
 
@@ -230,7 +230,7 @@ $(function() {
   socket.on('login', (data) => {
     connected = true;
     // Display the welcome message
-    const message = "서버에 연결되었습니다! - Welcome to Socket.IO Chat Server";
+    let message = "서버에 연결되었습니다! - Welcome to Socket.IO Chat Server";
     log(message, {
       prepend: true
     });
