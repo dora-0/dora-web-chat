@@ -1,8 +1,9 @@
 // Setup basic express server
 const fs = require('fs');
+
 const ssl_options = {
-    cert:fs.readFileSync('/etc/letsencrypt/live/mandora.xyz/fullchain.pem'),
-    key:fs.readFileSync('/etc/letsencrypt/live/mandora.xyz/privkey.pem')
+  cert:fs.readFileSync('dora.koreacentral.cloudapp.azure.com-chain.pem'),
+  key:fs.readFileSync('dora.koreacentral.cloudapp.azure.com-key.pem')
 };
 
 const express = require('express');
