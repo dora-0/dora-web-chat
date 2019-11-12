@@ -5,7 +5,9 @@
   "main": "app.js",
   "author": "dora-0",
   "license": "MIT",
-  "publishConfig": { "registry": "https://npm.pkg.github.com/" },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "dependencies": {
     "express": "^4.15.2",
     "fs": "0.0.1-security",
