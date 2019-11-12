@@ -1,5 +1,5 @@
 {
-  "name": "dora-web-chat",
+  "name": "@dora-0/dora-web-chat",
   "version": "0.0.1",
   "description": "A simple chat client using socket.io",
   "main": "app.js",
