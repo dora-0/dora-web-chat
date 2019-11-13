@@ -2,8 +2,8 @@
 const fs = require('fs');
 
 const ssl_options = {
-  cert:fs.readFileSync('dora.koreacentral.cloudapp.azure.com-chain.pem'),
-  key:fs.readFileSync('dora.koreacentral.cloudapp.azure.com-key.pem')
+  cert:fs.readFileSync('fullchain.pem'),
+  key:fs.readFileSync('privkey.pem')
 };
 
 const express = require('express');
@@ -20,7 +20,7 @@ server.listen(port, () => {
 // Routing
 app.use('/public', express.static('./public'));
 app.get('/', function(req, res) {
-    res.redirect(302, '/public')
+  res.redirect(302, '/public')
 });
 
 // Chatroom
@@ -32,6 +32,34 @@ io.on('connection', (socket) => {
 
   // when the client emits 'new message', this listens and executes
   socket.on('new message', (data) => {
+    if (data.toString() == "!help") {
+      // console.log('OUT: %s', data.toString().charAt(0));
+
+      io.to(socket.id).emit('new message', {
+        username: "",
+        message: "서버 도움말:",
+        color: "red"
+      });
+      io.to(socket.id).emit('new message', {
+        username: "",
+        message: "!id : 당신의 고유 ID를 출력합니다.",
+        color: "red"
+      });
+      io.to(socket.id).emit('new message', {
+        username: "",
+        message: "!help : 도움말을 출력합니다.",
+        color: "red"
+      });
+      return;
+    }
+    else if (data.toString() == "!id") {
+      io.to(socket.id).emit('new message', {
+        username: "",
+        message: "당신의 고유 ID: " + socket.id,
+        color: "red"
+      });
+      return;
+    }
     // we tell the client to execute 'new message'
     socket.broadcast.emit('new message', {
       username: socket.username,
