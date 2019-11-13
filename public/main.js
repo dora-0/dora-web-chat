@@ -88,8 +88,10 @@ $(function() {
     const $usernameDiv = $('<span class="username"/>')
         .text(data.username)
         .css('color', getUsernameColor(data.username));
+
     const $messageBodyDiv = $('<span class="messageBody">')
-        .text(data.message);
+        .text(data.message)
+        .css('color', data.color);
 
     const typingClass = data.typing ? 'typing' : '';
     const $messageDiv = $('<li class="message"/>')
