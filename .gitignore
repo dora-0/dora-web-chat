@@ -1,6 +1,5 @@
 /package-lock.json
 /node_modules/
 /.idea/
-/dora.koreacentral.cloudapp.azure.com-chain.pem
-/dora.koreacentral.cloudapp.azure.com-crt.pem
-/dora.koreacentral.cloudapp.azure.com-key.pem
+/fullchain.pem
+/privkey.pem
