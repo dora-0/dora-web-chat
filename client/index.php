@@ -42,7 +42,7 @@
     }
   </script>
   <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-  <script src="https://dora.koreacentral.cloudapp.azure.com:3001/socket.io/socket.io.js" onload="init_login()" onerror="load_error()"></script>
-  <script src="https://dora.koreacentral.cloudapp.azure.com:3001/public/main.js"></script>
+  <script src="https://azure.mandora.xyz:3001/socket.io/socket.io.js" onload="init_login()" onerror="load_error()"></script>
+  <script src="https://azure.mandora.xyz:3001/public/main.js"></script>
 </body>
 </html>
