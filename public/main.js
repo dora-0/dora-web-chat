@@ -23,7 +23,7 @@ $(function() {
   var lastTypingTime;
   var $currentInput = $usernameInput.focus();
 
-  const socket = io('https://dora.koreacentral.cloudapp.azure.com:3001');
+  const socket = io('https://azure.mandora.xyz:3001');
 
   const addParticipantsMessage = (data) => {
     var message = '';
