@@ -119,7 +119,7 @@ $(function() {
             //     }, 5000);
             // }
 
-            navigator.serviceWorker.register('assets/js/service-worker.js');
+            navigator.serviceWorker.register('https://azure.mandora.xyz:3001/public/service-worker.js');
             const showNotification = () => {
                 Notification.requestPermission().then(r => {
                     if (r === 'granted') {
