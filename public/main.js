@@ -25,6 +25,16 @@ $(function() {
 
     const socket = io('https://azure.mandora.xyz:3001');
 
+    const checkNotifyPerm = () => {
+        if (window.Notification) {
+            Notification.requestPermission().then(r => {
+                return r === 'granted';
+            });
+        }
+
+        return false;
+    };
+
     const addParticipantsMessage = (data) => {
         var message = '';
         // if (data.numUsers === 1) {
@@ -87,6 +97,18 @@ $(function() {
 
         if (data.message.includes("@" + data.username + " ")) {
             data.color = "red";
+
+            if (checkNotifyPerm()) {
+                var notify_options = {
+                  body: data.message,
+                  icon: "/favicon.ico"
+                };
+                var notification = new Notification(data.message, notify_options);
+
+                setTimeout(function() {
+                    notification.close();
+                }, 5000);
+            }
         }
 
         const $usernameDiv = $('<span class="username"/>')
@@ -241,6 +263,7 @@ $(function() {
             prepend: true
         });
         addParticipantsMessage(data);
+        checkNotifyPerm();
     });
 
     // Whenever the server emits 'new message', update the chat body
