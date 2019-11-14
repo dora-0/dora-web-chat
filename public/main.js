@@ -102,7 +102,7 @@ $(function() {
                   body: data.message,
                   icon: "/favicon.ico"
                 };
-                var notification = new Notification(data.message, notify_options);
+                var notification = new Notification("dora", notify_options);
 
                 setTimeout(function() {
                     notification.close();
