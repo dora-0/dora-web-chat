@@ -104,7 +104,7 @@ $(function() {
             $typingMessages.remove();
         }
 
-        if (data.message.includes("@" + data.username + " ")) {
+        if (data.message.includes("@" + username + " ")) {
             data.color = "red";
 
             if (window.Notification && checkNotifyPerm()) { //not supported for mobile
