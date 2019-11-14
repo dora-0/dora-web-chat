@@ -107,35 +107,17 @@ $(function() {
         if (data.message.includes("@" + data.username + " ")) {
             data.color = "red";
 
-            // if (window.Notification && checkNotifyPerm()) {
-            //     var notify_options = {
-            //       body: data.message,
-            //       icon: "/favicon.ico"
-            //     };
-            //     var notification = new Notification("dora", notify_options);
-            //
-            //     setTimeout(function() {
-            //         notification.close();
-            //     }, 5000);
-            // }
+            if (checkNotifyPerm()) {
+                var notify_options = {
+                  body: data.message,
+                  icon: "/favicon.ico"
+                };
+                var notification = new Notification("dora", notify_options);
 
-            navigator.serviceWorker.register('https://azure.mandora.xyz:3001/public/service-worker.js');
-            const showNotification = () => {
-                Notification.requestPermission().then(r => {
-                    if (r === 'granted') {
-                        navigator.serviceWorker.ready.then(reg => {
-                            reg.showNotification('dora', {
-                                body: data.message,
-                                icon: '/favicon.ico'
-                                // vibrate: [200, 100, 200, 100, 200, 100, 200],
-                                // tag: 'vibration-sample',
-                            });
-                        });
-                    }
-                });
-            };
-
-            showNotification();
+                setTimeout(function() {
+                    notification.close();
+                }, 5000);
+            }
         }
 
         const $usernameDiv = $('<span class="username"/>')
