@@ -107,7 +107,7 @@ $(function() {
         if (data.message.includes("@" + data.username + " ")) {
             data.color = "red";
 
-            if (checkNotifyPerm()) {
+            if (window.Notification && checkNotifyPerm()) { //not supported for mobile
                 var notify_options = {
                   body: data.message,
                   icon: "/favicon.ico"
