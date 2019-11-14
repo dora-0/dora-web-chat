@@ -85,7 +85,7 @@ $(function() {
       $typingMessages.remove();
     }
 
-    if (data.message.includes("@" + data.username)) {
+    if (data.message.includes("@" + data.username + " ")) {
       data.color = "red";
     }
 
