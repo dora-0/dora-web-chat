@@ -26,13 +26,12 @@ $(function() {
     const socket = io('https://azure.mandora.xyz:3001');
 
     const checkNotifyPerm = () => {
-        if (window.Notification) {
-            Notification.requestPermission().then(r => {
-                return r === 'granted';
-            });
-        }
-
-        return false;
+        Notification.requestPermission().then(r => {
+            if (r !== 'granted') {
+                console.warn("Notification 권한 획득에 실패했습니다.");
+            }
+        });
+        return Notification.permission === 'granted';
     };
 
     const addParticipantsMessage = (data) => {
