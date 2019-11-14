@@ -85,6 +85,10 @@ $(function() {
       $typingMessages.remove();
     }
 
+    if (data.message.includes("@" + data.username)) {
+      data.color = "red";
+    }
+
     const $usernameDiv = $('<span class="username"/>')
         .text(data.username)
         .css('color', getUsernameColor(data.username));
