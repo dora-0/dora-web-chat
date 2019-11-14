@@ -34,6 +34,15 @@ $(function() {
         return Notification.permission === 'granted';
     };
 
+    const addAutoMentionEvent = () => {
+        $('.username').click(function(){
+            var username = $(this).text();
+            $inputMessage.val(
+                $inputMessage.val() + "@" + username + " "
+            );
+        });
+    };
+
     const addParticipantsMessage = (data) => {
         var message = '';
         // if (data.numUsers === 1) {
@@ -75,6 +84,7 @@ $(function() {
             });
             // tell server to execute 'new message' and send along one parameter
             socket.emit('new message', message);
+            addAutoMentionEvent();
         }
     };
 
@@ -268,6 +278,7 @@ $(function() {
     // Whenever the server emits 'new message', update the chat body
     socket.on('new message', (data) => {
         addChatMessage(data);
+        addAutoMentionEvent();
     });
 
     // Whenever the server emits 'user joined', log it in the chat body
