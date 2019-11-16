@@ -31,8 +31,10 @@ var numUsers = 0;
 io.on('connection', (socket) => {
   var addedUser = false;
 
-  console.log(socket.handshake.headers['x-forwarded-for']);
-  console.log(socket.handshake.headers['x-forwarded-for'].split(",")[0]);
+  const client_ip = socket.handshake.headers['x-forwarded-for'].split(",")[0];
+  const tmp = client_ip.split(".");
+  const client_display_ip = tmp[0] + "." + tmp[1];
+  console.log("New connection from " + client_ip + " (ID: " + socket.id + ")");
 
   // when the client emits 'new message', this listens and executes
   socket.on('new message', (data) => {
@@ -67,7 +69,8 @@ io.on('connection', (socket) => {
     // we tell the client to execute 'new message'
     socket.broadcast.emit('new message', {
       username: socket.username,
-      message: data
+      message: data,
+      ip_addr: client_display_ip
     });
   });
 
