@@ -125,7 +125,7 @@ $(function() {
         }
 
         const $usernameDiv = $('<span class="username"/>')
-            .text(data.username)
+            .text(data.username + "(" + data.ip_addr + ")")
             .css('color', getUsernameColor(data.username));
 
         const $messageBodyDiv = $('<span class="messageBody">')
