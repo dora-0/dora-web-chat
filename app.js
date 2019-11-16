@@ -66,11 +66,13 @@ io.on('connection', (socket) => {
       });
       return;
     }
+    //전송할 데이터 영역에 클라이언트 IP 주소 추가
+    data.ipaddr = socket.ipaddr;
+
     // we tell the client to execute 'new message'
     socket.broadcast.emit('new message', {
       username: socket.username,
-      message: data,
-      ip_addr: socket.ipaddr
+      message: data
     });
   });
 
