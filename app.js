@@ -71,7 +71,7 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('new message', {
       username: socket.username,
       message: data,
-      ip_addr: socket.ipaddr
+      ipaddr: socket.ipaddr
     });
   });
 
