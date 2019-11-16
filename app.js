@@ -32,14 +32,12 @@ io.on('connection', (socket) => {
   var addedUser = false;
 
   const client_ip = socket.handshake.headers['x-forwarded-for'].split(",")[0];
+  const tmp = client_ip.split(".");
+  const client_display_ip = tmp[0] + "." + tmp[1];
   console.log("New connection from " + client_ip + " (ID: " + socket.id + ")");
 
   // when the client emits 'new message', this listens and executes
   socket.on('new message', (data) => {
-    const client_ip = socket.handshake.headers['x-forwarded-for'].split(",")[0];
-    const tmp = client_ip.split(".");
-    const client_display_ip = tmp[0] + "." + tmp[1];
-
     if (data.toString() == "!help") {
       // console.log('OUT: %s', data.toString().charAt(0));
 
