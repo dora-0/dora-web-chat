@@ -96,6 +96,7 @@ $(function() {
 
     // Adds the visual chat message to the message list
     const addChatMessage = (data, options) => {
+        console.log(data);
         // Don't fade the message in if there is an 'X was typing'
         const $typingMessages = getTypingMessages(data);
         options = options || {};
