@@ -113,7 +113,7 @@ $(function() {
                   icon: "/favicon.ico"
                 };
                 try {
-                    var notification = new Notification("dora", notify_options);
+                    var notification = new Notification(data.username, notify_options);
 
                     setTimeout(function() {
                         notification.close();
