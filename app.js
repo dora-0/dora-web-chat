@@ -1,17 +1,18 @@
 // Setup basic express server
-const fs = require('fs');
+// const fs = require('fs');
 
-const ssl_options = {
-  cert:fs.readFileSync('fullchain.pem'),
-  key:fs.readFileSync('privkey.pem')
-};
+// const ssl_options = {
+//   cert:fs.readFileSync('fullchain.pem'),
+//   key:fs.readFileSync('privkey.pem')
+// };
 
 const express = require('express');
 const app = express();
-const server = require('https').createServer(ssl_options, app);
+// const server = require('https').createServer(ssl_options, app);
+const server = require('http').createServer(app);
 const socketio = require('socket.io');
 const io = socketio.listen(server);
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 443;
 
 server.listen(port, () => {
   console.log('Server listening at port %d', port);
