@@ -19,10 +19,10 @@ server.listen(port, () => {
 });
 
 // Routing
-app.use('/public', express.static('./public'));
-app.get('/', function(req, res) {
-  res.redirect(302, '/public')
-});
+app.use('/public', express.static('./'));
+// app.get('/', function(req, res) {
+//   res.redirect(302, '/public')
+// });
 
 // Chatroom
 
