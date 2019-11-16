@@ -96,7 +96,6 @@ $(function() {
 
     // Adds the visual chat message to the message list
     const addChatMessage = (data, options) => {
-        console.log(data);
         // Don't fade the message in if there is an 'X was typing'
         const $typingMessages = getTypingMessages(data);
         options = options || {};
@@ -125,8 +124,20 @@ $(function() {
             }
         }
 
+        //클라이언트에서 메시지를 보낼 때는 메시지를 DOM에 추가 후 서버로 emit 하므로 ipaddr를 받아올 수 없다.
+        //따라서 data.ipaddr이 정의되어 있지 않으면 IP 주소를 표시하지 않음.
+        //TODO: 어떤 상황에서든 IP 주소가 보이게 하기
+        var ipaddr = data.ipaddr;
+
+        if (typeof ipaddr == "undefined" || ipaddr == null || ipaddr === "") {
+            ipaddr = "";
+        }
+        else {
+            ipaddr = "(" + ipaddr + ")";
+        }
+
         const $usernameDiv = $('<span class="username"/>')
-            .text(data.username + "(" + data.ipaddr + ")")
+            .text(data.username + ipaddr)
             .css('color', getUsernameColor(data.username));
 
         const $messageBodyDiv = $('<span class="messageBody">')
