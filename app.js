@@ -66,6 +66,7 @@ io.on('connection', (socket) => {
       });
       return;
     }
+    console.log("AddChatMessageEvent : socket.ipaddr? : " + socket.ipaddr);
     // we tell the client to execute 'new message'
     socket.broadcast.emit('new message', {
       username: socket.username,
