@@ -33,9 +33,8 @@ io.on('connection', (socket) => {
 
   const client_ip = socket.handshake.headers['x-forwarded-for'].split(",")[0];
   const tmp = client_ip.split(".");
-  const client_display_ip = tmp[0] + "." + tmp[1];
+  socket.ipaddr = tmp[0] + "." + tmp[1];
   console.log("New connection from " + client_ip + " (ID: " + socket.id + ")");
-  console.log("client_display_ip : " + client_display_ip);
 
   // when the client emits 'new message', this listens and executes
   socket.on('new message', (data) => {
@@ -71,7 +70,7 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('new message', {
       username: socket.username,
       message: data,
-      ip_addr: client_display_ip
+      ip_addr: socket.ipaddr
     });
   });
 
