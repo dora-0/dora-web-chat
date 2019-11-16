@@ -34,9 +34,9 @@ $(function() {
         return Notification.permission === 'granted';
     };
 
-    const addAutoMentionEvent = () => {
+    const addAutoMentionEvent = (data) => {
         $('.username').click(function(){
-            var username = $(this).text();
+            var username = data.username;
             $inputMessage.val(
                 $inputMessage.val() + "@" + username + " "
             );
@@ -78,13 +78,14 @@ $(function() {
         // if there is a non-empty message and a socket connection
         if (message && connected) {
             $inputMessage.val('');
-            addChatMessage({
+            const data = {
                 username: username,
                 message: message
-            });
+            };
+            addChatMessage(data);
             // tell server to execute 'new message' and send along one parameter
             socket.emit('new message', message);
-            addAutoMentionEvent();
+            addAutoMentionEvent(data);
         }
     };
 
@@ -294,7 +295,7 @@ $(function() {
     // Whenever the server emits 'new message', update the chat body
     socket.on('new message', (data) => {
         addChatMessage(data);
-        addAutoMentionEvent();
+        addAutoMentionEvent(data);
     });
 
     // Whenever the server emits 'user joined', log it in the chat body
