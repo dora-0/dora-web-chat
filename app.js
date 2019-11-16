@@ -35,6 +35,7 @@ io.on('connection', (socket) => {
   const tmp = client_ip.split(".");
   const client_display_ip = tmp[0] + "." + tmp[1];
   console.log("New connection from " + client_ip + " (ID: " + socket.id + ")");
+  console.log("client_display_ip : " + client_display_ip);
 
   // when the client emits 'new message', this listens and executes
   socket.on('new message', (data) => {
