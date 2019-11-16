@@ -31,6 +31,9 @@ var numUsers = 0;
 io.on('connection', (socket) => {
   var addedUser = false;
 
+  console.log(socket.handshake.headers['x-forwarded-for']);
+  console.log(socket.handshake.headers['x-forwarded-for'].split(",")[0]);
+
   // when the client emits 'new message', this listens and executes
   socket.on('new message', (data) => {
     if (data.toString() == "!help") {
