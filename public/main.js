@@ -260,6 +260,7 @@ $(function() {
             } else {
                 //비회원일 때 닉네임 중복 검사
                 if ($usernameInput.attr('type') !== 'hidden') {
+                    $usernameMsg.css('color', 'white');
                     $usernameMsg.text('닉네임 중복 검사 중 ...');
                     socket.emit('verify user', cleanInput($usernameInput.val().trim()));
                 }
@@ -301,9 +302,10 @@ $(function() {
     });
 
     socket.on('verify user', (data) => {
-        console.log(data);
+        // console.log(data);
         if (data.verified === false) {
-            $usernameMsg.text('이미 사용 중인 닉네임입니다.\n다른 닉네임을 입력해 보세요.');
+            $usernameMsg.css('color', 'yellow');
+            $usernameMsg.html('이미 사용 중인 닉네임입니다.<br/>다른 닉네임을 입력해 보세요.');
         }
         else {
             setUsername();
