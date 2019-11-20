@@ -260,6 +260,7 @@ $(function() {
             } else {
                 //비회원일 때 닉네임 중복 검사
                 if ($usernameInput.attr('type') !== 'hidden') {
+                    $usernameMsg.text('닉네임 중복 검사 중 ...');
                     socket.emit('verify user', cleanInput($usernameInput.val().trim()));
                 }
                 else {
