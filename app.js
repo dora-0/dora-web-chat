@@ -46,12 +46,13 @@ const verifyUsername = (username) => {
            throw err;
          }
 
-         // console.log("results length?: " + results.length);
-         connection.release();
+         console.log("results length?: " + results.length);
 
          if (results.length === 0) {
            verified = true;
          }
+
+         connection.release();
        });
     }
   });
