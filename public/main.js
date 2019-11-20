@@ -64,10 +64,9 @@ $(function() {
             let verified = false;
             socket.emit('verify user', username, (data) => {
                 console.log(data);
-                verified = data;
-                if (!verified) {
-                    $usernameMsg.text('이미 사용 중인 닉네임입니다.\n다른 닉네임을 입력해 보세요.');
-                }
+                // if (!verified) {
+                //     $usernameMsg.text('이미 사용 중인 닉네임입니다.\n다른 닉네임을 입력해 보세요.');
+                // }
             });
 
             if (!verified) return;
