@@ -109,8 +109,10 @@ io.on('connection', (socket) => {
   });
 
   socket.on('verify user', (username) => {
+    const isValidUsername = verifyUsername(username);
+    console.log("received verify user, is valid? : " + isValidUsername);
     io.to(socket.id).emit('verify user', {
-      verified: verifyUsername(username)
+      verified: isValidUsername
     });
   });
 
