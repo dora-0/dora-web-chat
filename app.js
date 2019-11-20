@@ -24,6 +24,35 @@ app.use('/', express.static('./public'));
 //   res.redirect(302, '/public')
 // });
 
+// DB
+const mysql = require('mysql');
+const dbConf = {
+  host : 'azure-legacy.mandora.xyz',
+  user : 'dora-web',
+  password : 'GSGMFGWHOjrvQwZa',
+  database : 'dora-web',
+  port : 39148,
+  connectionLimit : 50
+}
+const pool = mysql.createPool(dbConf);
+
+const verifyUsername = (username) => {
+  pool.getConnection((err, connection) => {
+    if (!err) {
+      const sql = 'select nickname from users where nickname = ' + mysql.escape(username);
+       connection.query(sql, (err, results, fields) => {
+         if (err) {
+           throw err;
+         }
+
+         return results.length === 0;
+       });
+    }
+
+    connection.release();
+  });
+};
+
 // Chatroom
 
 var numUsers = 0;
@@ -53,6 +82,11 @@ io.on('connection', (socket) => {
       });
       io.to(socket.id).emit('new message', {
         username: "",
+        message: "!w {닉네임} {메시지} : {닉네임} 유저에게 귓속말을 보냅니다.",
+        color: "red"
+      });
+      io.to(socket.id).emit('new message', {
+        username: "",
         message: "!help : 도움말을 출력합니다.",
         color: "red"
       });
@@ -71,6 +105,13 @@ io.on('connection', (socket) => {
       username: socket.username,
       message: data,
       ipaddr: socket.ipaddr
+    });
+  });
+
+  socket.on('verify user', (username, fn) => {
+    // fn(verifyUsername(username));
+    fn({
+      result: verifyUsername(username)
     });
   });
 

@@ -58,6 +58,19 @@ $(function() {
     const setUsername = () => {
         username = cleanInput($usernameInput.val().trim());
 
+        //비회원일 때 닉네임 중복 검사
+        if ($usernameInput.attr('type') !== 'hidden') {
+            let verified = false;
+            socket.emit('verify user', username, (data) => {
+                verified = data.result;
+                if (!verified) {
+                    $usernameInput.val('이미 사용 중인 닉네임입니다.');
+                }
+            });
+
+            if (!verified) return;
+        }
+
         // If the username is valid
         if (username) {
             $loginPage.fadeOut();
