@@ -36,30 +36,6 @@ const dbConf = {
 }
 const pool = mysql.createPool(dbConf);
 
-const verifyUsername = (username) => {
-  var verified = false;
-  pool.getConnection((err, connection) => {
-    if (!err) {
-      const sql = 'select nickname from users where nickname = ' + mysql.escape(username);
-       connection.query(sql, (err, results, fields) => {
-         if (err) {
-           throw err;
-         }
-
-         console.log("results length?: " + results.length);
-
-         if (results.length == 0) {
-           verified = true;
-         }
-
-         connection.release();
-       });
-    }
-  });
-
-  return verified;
-};
-
 // Chatroom
 
 var numUsers = 0;
@@ -115,12 +91,36 @@ io.on('connection', (socket) => {
     });
   });
 
-  socket.on('verify user', (username) => {
-    const isValidUsername = verifyUsername(username);
-    console.log("received verify user, is valid? : " + isValidUsername);
-    io.to(socket.id).emit('verify user', {
-      verified: isValidUsername
+  const verifyUsername = (username) => {
+    pool.getConnection((err, connection) => {
+      if (!err) {
+        const sql = 'select nickname from users where nickname = ' + mysql.escape(username);
+        connection.query(sql, (err, results, fields) => {
+          if (err) {
+            throw err;
+          }
+
+          // console.log("results length?: " + results.length);
+
+          if (results.length === 0) {
+            io.to(socket.id).emit('verify user', {
+              verified: true
+            });
+          }
+          else {
+            io.to(socket.id).emit('verify user', {
+              verified: false
+            });
+          }
+
+          connection.release();
+        });
+      }
     });
+  };
+
+  socket.on('verify user', (username) => {
+    verifyUsername(username);
   });
 
   // when the client emits 'add user', this listens and executes
