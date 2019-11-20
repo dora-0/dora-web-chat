@@ -59,19 +59,6 @@ $(function() {
     const setUsername = () => {
         username = cleanInput($usernameInput.val().trim());
 
-        //비회원일 때 닉네임 중복 검사
-        if ($usernameInput.attr('type') !== 'hidden') {
-            let verified = false;
-            socket.emit('verify user', username, (data) => {
-                console.log(data);
-                // if (!verified) {
-                //     $usernameMsg.text('이미 사용 중인 닉네임입니다.\n다른 닉네임을 입력해 보세요.');
-                // }
-            });
-
-            if (!verified) return;
-        }
-
         // If the username is valid
         if (username) {
             $loginPage.fadeOut();
@@ -271,7 +258,13 @@ $(function() {
                 socket.emit('stop typing');
                 typing = false;
             } else {
-                setUsername();
+                //비회원일 때 닉네임 중복 검사
+                if ($usernameInput.attr('type') !== 'hidden') {
+                    socket.emit('verify user', username);
+                }
+                else {
+                    setUsername();
+                }
             }
         }
     });
@@ -306,6 +299,14 @@ $(function() {
         checkNotifyPerm();
     });
 
+    socket.on('verify user', (data) => {
+        if (!data.verified) {
+            $usernameMsg.text('이미 사용 중인 닉네임입니다.\n다른 닉네임을 입력해 보세요.');
+        }
+        else {
+            setUsername();
+        }
+    });
     // Whenever the server emits 'new message', update the chat body
     socket.on('new message', (data) => {
         addChatMessage(data);
