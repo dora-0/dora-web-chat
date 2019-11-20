@@ -10,6 +10,7 @@ $(function() {
     // Initialize variables
     const $window = $(window);
     const $usernameInput = $('.usernameInput'); // Input for username
+    const $usernameMsg = $('#usernameMsg');
     const $messages = $('.messages'); // Messages area
     const $inputMessage = $('.inputMessage'); // Input message input box
 
@@ -62,9 +63,9 @@ $(function() {
         if ($usernameInput.attr('type') !== 'hidden') {
             let verified = false;
             socket.emit('verify user', username, (data) => {
-                verified = data.result;
+                verified = data;
                 if (!verified) {
-                    $usernameInput.val('이미 사용 중인 닉네임입니다.');
+                    $usernameMsg.val('이미 사용 중인 닉네임입니다.\n다른 닉네임을 입력해 보세요.');
                 }
             });
 
