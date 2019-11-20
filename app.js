@@ -45,6 +45,7 @@ const verifyUsername = (username) => {
            throw err;
          }
 
+         console.log("results length?: " + results.length);
          return results.length === 0;
        });
     }
