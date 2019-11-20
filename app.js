@@ -109,7 +109,8 @@ io.on('connection', (socket) => {
   });
 
   socket.on('verify user', (username, fn) => {
-    fn(verifyUsername(username));
+    // fn(verifyUsername(username));
+    fn("received");
   });
 
   // when the client emits 'add user', this listens and executes
