@@ -37,6 +37,7 @@ const dbConf = {
 const pool = mysql.createPool(dbConf);
 
 const verifyUsername = (username) => {
+  var verified = false;
   pool.getConnection((err, connection) => {
     if (!err) {
       const sql = 'select nickname from users where nickname = ' + mysql.escape(username);
@@ -45,13 +46,17 @@ const verifyUsername = (username) => {
            throw err;
          }
 
-         console.log("results length?: " + results.length);
-         return results.length === 0;
+         // console.log("results length?: " + results.length);
+         connection.release();
+
+         if (results.length === 0) {
+           verified = true;
+         }
        });
     }
-
-    connection.release();
   });
+
+  return verified;
 };
 
 // Chatroom
