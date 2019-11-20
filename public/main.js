@@ -62,7 +62,7 @@ $(function() {
         //비회원일 때 닉네임 중복 검사
         if ($usernameInput.attr('type') !== 'hidden') {
             let verified = false;
-            socket.emit('verify user', username, (data) => {
+            socket.emit('verify user', username, function (data) {
                 console.log(data);
                 // if (!verified) {
                 //     $usernameMsg.text('이미 사용 중인 닉네임입니다.\n다른 닉네임을 입력해 보세요.');
