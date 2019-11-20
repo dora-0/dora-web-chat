@@ -48,7 +48,7 @@ const verifyUsername = (username) => {
 
          console.log("results length?: " + results.length);
 
-         if (results.length === 0) {
+         if (results.length == 0) {
            verified = true;
          }
 
