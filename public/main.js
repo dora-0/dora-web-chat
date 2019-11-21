@@ -111,8 +111,8 @@ $(function() {
 
             if (window.Notification && checkNotifyPerm()) { //not supported for mobile
                 var notify_options = {
-                  body: data.message,
-                  icon: "/favicon.ico"
+                    body: data.message,
+                    icon: "/favicon.ico"
                 };
                 try {
                     var notification = new Notification(data.username, notify_options);
