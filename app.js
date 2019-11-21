@@ -14,6 +14,8 @@ const socketio = require('socket.io');
 const io = socketio.listen(server);
 const port = process.env.PORT || 443;
 
+var clients = [];
+
 server.listen(port, () => {
   console.log('Server listening at port %d', port);
 });
@@ -47,6 +49,30 @@ io.on('connection', (socket) => {
   const tmp = client_ip.split(".");
   socket.ipaddr = tmp[0] + "." + tmp[1];
   console.log("New connection from " + client_ip + " (ID: " + socket.id + ")");
+
+  socket.on('storeClientInfo', (data) => {
+    for (var i = 0, len = clients.length; i < len; ++i) {
+      const c = clients[i];
+
+      if (c.clientID === socket.id) {
+        io.to(socket.id).emit('verify user', {
+          verified: false,
+          type: "member"
+        });
+        return;
+      }
+    }
+
+    var clientInfo = {};
+    clientInfo.username = data.username;
+    clientInfo.clientID = socket.id;
+    clients.push(clientInfo);
+
+    io.to(socket.id).emit('verify user', {
+      verified: true,
+      type: "member"
+    });
+  });
 
   // when the client emits 'new message', this listens and executes
   socket.on('new message', (data) => {
@@ -91,7 +117,7 @@ io.on('connection', (socket) => {
     });
   });
 
-  const verifyUsername = (username) => {
+  const verifyUsername = (username, type) => {
     pool.getConnection((err, connection) => {
       if (!err) {
         const sql = 'select nickname from users where nickname = ' + mysql.escape(username);
@@ -104,12 +130,14 @@ io.on('connection', (socket) => {
 
           if (results.length === 0) {
             io.to(socket.id).emit('verify user', {
-              verified: true
+              verified: true,
+              type: type
             });
           }
           else {
             io.to(socket.id).emit('verify user', {
-              verified: false
+              verified: false,
+              type: type
             });
           }
 
@@ -119,8 +147,8 @@ io.on('connection', (socket) => {
     });
   };
 
-  socket.on('verify user', (username) => {
-    verifyUsername(username);
+  socket.on('verify user', (data) => {
+    verifyUsername(data.username, data.type);
   });
 
   // when the client emits 'add user', this listens and executes
@@ -157,6 +185,15 @@ io.on('connection', (socket) => {
 
   // when the user disconnects.. perform this
   socket.on('disconnect', () => {
+    for (var i = 0, len = clients.length; i < len; ++i) {
+      const c = clients[i];
+
+      if (c.clientID === socket.id) {
+        clients.splice(i, 1);
+        break;
+      }
+    }
+
     if (addedUser) {
       --numUsers;
 

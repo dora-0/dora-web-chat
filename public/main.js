@@ -264,11 +264,20 @@ $(function() {
                     if (tmp) {
                         $usernameMsg.css('color', 'white');
                         $usernameMsg.text('닉네임 중복 검사 중 ...');
-                        socket.emit('verify user', tmp);
+                        socket.emit('verify user', {
+                            username: tmp,
+                            type: "guest"
+                        });
                     }
                 }
+                //회원이면 현재 접속 중인지 체크
                 else {
-                    setUsername();
+                    const tmp = cleanInput($usernameInput.val().trim());
+                    if (tmp) {
+                        socket.emit('storeClientInfo', {
+                            username: tmp
+                        });
+                    }
                 }
             }
         }
@@ -308,7 +317,16 @@ $(function() {
         // console.log(data);
         if (data.verified === false) {
             $usernameMsg.css('color', 'yellow');
-            $usernameMsg.html('이미 사용 중인 닉네임입니다.<br/>다른 닉네임을 입력해 보세요.');
+            $usernameMsg.html('이미 사용 중인 닉네임이거나 다른 세션에서 접속 중입니다.<br/>다시 시도해 보세요.');
+        }
+        else if (data.verified === true && data.type === "guest") {
+            //비회원일 경우 현재 접속 중인 유저의 닉네임 체크
+            const tmp = cleanInput($usernameInput.val().trim());
+            if (tmp) {
+                socket.emit('storeClientInfo', {
+                    username: tmp
+                });
+            }
         }
         else {
             setUsername();
