@@ -54,7 +54,7 @@ io.on('connection', (socket) => {
     for (var i = 0, len = clients.length; i < len; ++i) {
       const c = clients[i];
 
-      if (c.clientID === socket.id) {
+      if (c.username === data.username) {
         io.to(socket.id).emit('verify user', {
           verified: false,
           type: "member"
@@ -76,7 +76,7 @@ io.on('connection', (socket) => {
 
   // when the client emits 'new message', this listens and executes
   socket.on('new message', (data) => {
-    if (data.toString() == "!help") {
+    if (data.toString() === "!help") {
       // console.log('OUT: %s', data.toString().charAt(0));
 
       io.to(socket.id).emit('new message', {
@@ -101,7 +101,7 @@ io.on('connection', (socket) => {
       });
       return;
     }
-    else if (data.toString() == "!id") {
+    else if (data.toString() === "!id") {
       io.to(socket.id).emit('new message', {
         username: "",
         message: "당신의 고유 ID: " + socket.id,
