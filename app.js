@@ -57,7 +57,7 @@ io.on('connection', (socket) => {
       if (c.username === data.username) {
         io.to(socket.id).emit('verify user', {
           verified: false,
-          type: "member"
+          require_task: "none"
         });
         return;
       }
@@ -67,10 +67,11 @@ io.on('connection', (socket) => {
     clientInfo.username = data.username;
     clientInfo.clientID = socket.id;
     clients.push(clientInfo);
+    socket.user_type = data.user_type;
 
     io.to(socket.id).emit('verify user', {
       verified: true,
-      type: "member"
+      require_task: "none"
     });
   });
 
@@ -110,6 +111,8 @@ io.on('connection', (socket) => {
       return;
     }
     // we tell the client to execute 'new message'
+    if (socket.user_type === "member") socket.ipaddr = "";
+
     socket.broadcast.emit('new message', {
       username: socket.username,
       message: data,
@@ -117,7 +120,7 @@ io.on('connection', (socket) => {
     });
   });
 
-  const verifyUsername = (username, type) => {
+  const verifyUsername = (username, require_task) => {
     pool.getConnection((err, connection) => {
       if (!err) {
         const sql = 'select nickname from users where nickname = ' + mysql.escape(username);
@@ -131,13 +134,13 @@ io.on('connection', (socket) => {
           if (results.length === 0) {
             io.to(socket.id).emit('verify user', {
               verified: true,
-              type: type
+              require_task: require_task
             });
           }
           else {
             io.to(socket.id).emit('verify user', {
               verified: false,
-              type: type
+              require_task: require_task
             });
           }
 
@@ -148,7 +151,7 @@ io.on('connection', (socket) => {
   };
 
   socket.on('verify user', (data) => {
-    verifyUsername(data.username, data.type);
+    verifyUsername(data.username, data.require_task);
   });
 
   // when the client emits 'add user', this listens and executes

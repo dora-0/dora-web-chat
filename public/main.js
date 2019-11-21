@@ -266,7 +266,7 @@ $(function() {
                         $usernameMsg.text('닉네임 중복 검사 중 ...');
                         socket.emit('verify user', {
                             username: tmp,
-                            type: "guest"
+                            require_task: "storeClientInfo"
                         });
                     }
                 }
@@ -275,7 +275,8 @@ $(function() {
                     const tmp = cleanInput($usernameInput.val().trim());
                     if (tmp) {
                         socket.emit('storeClientInfo', {
-                            username: tmp
+                            username: tmp,
+                            user_type: "member"
                         });
                     }
                 }
@@ -319,12 +320,13 @@ $(function() {
             $usernameMsg.css('color', 'yellow');
             $usernameMsg.html('이미 사용 중인 닉네임이거나 다른 세션에서 접속 중입니다.<br/>다시 시도해 보세요.');
         }
-        else if (data.verified === true && data.type === "guest") {
+        else if (data.verified === true && data.require_task === "storeClientInfo") {
             //비회원일 경우 현재 접속 중인 유저의 닉네임 체크
             const tmp = cleanInput($usernameInput.val().trim());
             if (tmp) {
                 socket.emit('storeClientInfo', {
-                    username: tmp
+                    username: tmp,
+                    user_type: "guest"
                 });
             }
         }
