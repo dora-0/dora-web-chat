@@ -246,8 +246,9 @@ $(function() {
         return COLORS[index];
     };
 
-    // Keyboard events
 
+
+    // Keyboard events
     $window.keydown(event => {
         // Auto-focus the current input when a key is typed
         if (!(event.ctrlKey || event.metaKey || event.altKey)) {
@@ -255,34 +256,7 @@ $(function() {
         }
         // When the client hits ENTER on their keyboard
         if (event.which === 13) {
-            if (username) {
-                sendMessage();
-                socket.emit('stop typing');
-                typing = false;
-            } else {
-                //비회원일 때 닉네임 중복 검사
-                if ($usernameInput.attr('type') !== 'hidden') {
-                    const tmp = cleanInput($usernameInput.val().trim());
-                    if (tmp) {
-                        $usernameMsg.css('color', 'white');
-                        $usernameMsg.text('닉네임 중복 검사 중 ...');
-                        socket.emit('verify user', {
-                            username: tmp,
-                            require_task: "storeClientInfo"
-                        });
-                    }
-                }
-                //회원이면 현재 접속 중인지 체크
-                else {
-                    const tmp = cleanInput($usernameInput.val().trim());
-                    if (tmp) {
-                        socket.emit('storeClientInfo', {
-                            username: tmp,
-                            user_type: "member"
-                        });
-                    }
-                }
-            }
+            initUser();
         }
     });
 
@@ -290,11 +264,43 @@ $(function() {
         updateTyping();
     });
 
+
+    function initUser() {
+        if (username) {
+            sendMessage();
+            socket.emit('stop typing');
+            typing = false;
+        } else {
+            //비회원일 때 닉네임 중복 검사
+            if ($usernameInput.attr('type') !== 'hidden') {
+                const tmp = cleanInput($usernameInput.val().trim());
+                if (tmp) {
+                    $usernameMsg.css('color', 'white');
+                    $usernameMsg.text('닉네임 중복 검사 중 ...');
+                    socket.emit('verify user', {
+                        username: tmp,
+                        require_task: "storeClientInfo"
+                    });
+                }
+            }
+            //회원이면 현재 접속 중인지 체크
+            else {
+                const tmp = cleanInput($usernameInput.val().trim());
+                if (tmp) {
+                    socket.emit('storeClientInfo', {
+                        username: tmp,
+                        user_type: "member"
+                    });
+                }
+            }
+        }
+    }
     // Click events
 
     // Focus input when clicking anywhere on login page
     $loginPage.click(() => {
         $currentInput.focus();
+        initUser();
     });
 
     // Focus input when clicking on the message input's border
