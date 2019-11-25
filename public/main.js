@@ -9,6 +9,7 @@ $(function() {
 
     // Initialize variables
     const $window = $(window);
+    const $username = $('.username');
     const $usernameInput = $('.usernameInput'); // Input for username
     const $usernameMsg = $('#usernameMsg');
     const $messages = $('.messages'); // Messages area
@@ -36,7 +37,8 @@ $(function() {
     };
 
     const addAutoMentionEvent = (data) => {
-        $('.username').click(function(){
+        $username.unbind('click.AutoMention');
+        $username.bind('click.AutoMention', function(){
             var username = data.username;
             $inputMessage.val(
                 $inputMessage.val() + "@" + username + " "
