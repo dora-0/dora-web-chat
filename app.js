@@ -90,11 +90,11 @@ io.on('connection', (socket) => {
         message: "!id : 당신의 고유 ID를 출력합니다.",
         color: "red"
       });
-      io.to(socket.id).emit('new message', {
-        username: "",
-        message: "!w {닉네임} {메시지} : {닉네임} 유저에게 귓속말을 보냅니다.",
-        color: "red"
-      });
+      // io.to(socket.id).emit('new message', {
+      //   username: "",
+      //   message: "!w {닉네임} {메시지} : {닉네임} 유저에게 귓속말을 보냅니다.",
+      //   color: "red"
+      // });
       io.to(socket.id).emit('new message', {
         username: "",
         message: "!help : 도움말을 출력합니다.",
