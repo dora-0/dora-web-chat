@@ -273,8 +273,9 @@ $(function() {
         } else {
             //비회원일 때 닉네임 중복 검사
             if ($usernameInput.attr('type') !== 'hidden') {
+                var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-+<>@\#$%&\\\=\(\'\"]/gi;
                 const tmp = cleanInput($usernameInput.val().trim());
-                if (tmp) {
+                if (tmp && !regExp.test(tmp)) { //특수문자가 포함되지 않도록 함
                     $usernameMsg.css('color', 'white');
                     $usernameMsg.text('닉네임 중복 검사 중 ...');
                     socket.emit('verify user', {
