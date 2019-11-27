@@ -39,7 +39,7 @@ $(function() {
         var $username = $('.username');
         $username.unbind('click.AutoMention');
         $username.bind('click.AutoMention', function(){
-            var username = data.username;
+            var username = $(this).text().split('(')[0];
             $inputMessage.val(
                 $inputMessage.val() + "@" + username + " "
             );
