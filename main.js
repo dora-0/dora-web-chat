@@ -119,9 +119,9 @@ $(function() {
                 try {
                     var notification = new Notification(data.username, notify_options);
 
-                    setTimeout(function() {
-                        notification.close();
-                    }, 5000);
+                    // setTimeout(function() {
+                    //     notification.close();
+                    // }, 5000);
                 } catch (e) {
                     console.warn("Warning: Not supported for this platform");
                 }
