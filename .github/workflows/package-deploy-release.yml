@@ -18,9 +18,6 @@ jobs:
           node-version: 18
           registry-url: https://registry.npmjs.org/
       - run: npm install
-      - run: npm run pack:build
-      - run: npm run pack:build:tsc
-      - run: mv ./index.ts ./index.d.ts
       - run: rm -rf ./src
       - run: rm -rf ./public
       - run: rm -rf ./.github
