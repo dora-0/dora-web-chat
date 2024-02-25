@@ -31,7 +31,7 @@ const mysql = require('mysql');
 const dbConf = {
   host : 'azure-legacy.mandora.xyz',
   user : 'dora-web',
-  password : 'GSGMFGWHOjrvQwZa',
+  password : 'GSGMFGWHOjrvQwZa', // This account information and host address is used for testing and is currently invalid.
   database : 'dora-web',
   port : 39148,
   connectionLimit : 50
