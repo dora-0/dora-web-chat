@@ -5,6 +5,7 @@
   "main": "app.js",
   "author": "dora-0",
   "license": "MIT",
+  "private": false,
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
