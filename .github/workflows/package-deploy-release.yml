@@ -30,7 +30,6 @@ jobs:
       - run: rm -rf ./next.config.js
       - run: rm -rf ./next-env.d.ts
       - run: rm -rf ./.eslintrc.json
-      - run: mv ./lib/src ./src
       - run: rm -rf ./lib
       - run: npm publish --access=public
         env:
